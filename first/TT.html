@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <title>圆周运动3</title>
+    <style type="text/css">
+        html,body{
+             background: #181818;
+        }
+        canvas {
+            border-image: linear-gradient(to left,rgba(0,255,255,0),rgba(0,255,255,0.8) 20%,rgba(255,255,0,0.8) 80%,rgba(255,255,255,0))1;
+            animation:4s line1  ease-out forwards;
+            border: 1px solid;
+            position: absolute;
+            left: 50%;
+            margin-left: -450px;
+            margin-top: 100px;
+
+        }
+        @keyframes line1 {
+            0%{border-image: linear-gradient(to left,rgba(0,255,255,0),rgba(0,255,255,0) 20%,rgba(255,255,0,0) 0%,rgba(255,255,255,0))1;}
+            100%{border-image: linear-gradient(to left,rgba(0,255,255,0),rgba(0,255,255,0.8) 20%,rgba(255,255,0,0.8) 80%,rgba(255,255,255,0))1;}
+        }
+    </style>
+</head>
+
+<body>
+<canvas id="mycanvas" width="900" height="500">
+</canvas>
+</body>
+<script type="text/javascript">
+    var canvas = document.getElementById("mycanvas");
+    var context = canvas.getContext("2d");
+
+    //移动坐标系使旋转中心点位于画布中心
+    context.translate(30, 200);
+    var cnt = 0
+    startAngle = Math.PI / 2
+    x = 0,
+        y = 270,
+        move = 0,
+        raduis = 30,
+        point = {x: x, y: y + raduis},
+        points = [point];
+
+    //画小球
+    function draw(angle, move) {
+        drawPoints(context)
+        context.beginPath();
+        context.arc(x + move, y, raduis, startAngle + angle, 5 * Math.PI / 2 + angle);
+        context.lineTo(x + move, y)
+        context.stroke()
+        context.fillStyle = "#faa"; //颜色
+        context.strokeStyle = "#faa";
+        context.stroke();
+        context.font = "normal 10px 微软雅黑"; //字体
+        context.textBaseline = "middle"; //竖直对齐
+        context.textAlign = "center"; //水平对齐　
+        context.fillText(cnt, x, y, 10); //绘制文专字
+    }
+
+    var everyPer = 0;
+
+    function drawPoints() {
+            context.beginPath();
+            context.moveTo(points[0].x,points[0].y)
+        for (i = 1; i < points.length; i++) {
+            context.lineTo(points[i].x,points[i].y)
+           // context.arc(points[i].x, points[i].y, 2, 0, Math.PI * 2)
+           // context.fill()
+            context.stroke()
+
+        }
+    }
+
+    function act() {
+        //清空画布
+        context.clearRect(-30, -200, canvas.width, canvas.height);
+        draw(everyPer, move, point);
+
+        everyPer += Math.PI / 60;
+        move += 180 / 60 / 360 * (2 * Math.PI * raduis);
+        var newPoint = {x: x + move - Math.sin(everyPer) * raduis, y: y + Math.cos(everyPer) * raduis}
+        points.push(newPoint)
+        cnt++
+        if (cnt == 361) {
+            console.log(move - (180 / 30 / 360 * (2 * Math.PI * raduis)))
+            console.log(2 * Math.PI * raduis)
+            points = [point]
+            clearInterval(timer)
+        }
+
+    }
+
+    var timer = setInterval(act, 100)
+</script>
+
+</html>
