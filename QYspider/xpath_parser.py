@@ -21,6 +21,5 @@ class xpath_parser(parser):
             container[k] = html.xpath(self.conductor[k])
         return container
 
-
     def execute(self, url):
         pass
